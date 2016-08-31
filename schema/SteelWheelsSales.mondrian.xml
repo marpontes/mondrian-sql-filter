@@ -3,12 +3,16 @@
     <View alias="factView">
         <SQL dialect="generic">
           <![CDATA[
-                  SELECT
-                  F.*
-                  FROM        ORDERFACT F
-                  INNER JOIN  CUSTOMER_W_TER C ON C.CUSTOMERNUMBER = F.CUSTOMERNUMBER
-                  LEFT OUTER JOIN  SECURITY_RULES R ON R.TERRITORY = C.TERRITORY
-                  WHERE lower('admin') = case when 'A' = 'N' THEN lower('admin') ELSE lower(R.USERNAME) END
+                        SELECT
+                        F.*
+                        FROM        ORDERFACT F
+                        INNER JOIN  CUSTOMER_W_TER C ON C.CUSTOMERNUMBER = F.CUSTOMERNUMBER
+                        LEFT OUTER JOIN  SECURITY_RULES R ON R.TERRITORY = C.TERRITORY
+                        WHERE
+                                lower('${USER_NAME}') =  CASE WHEN lower('${USER_NAME}') = 'admin'
+                                                  THEN 'admin'
+                                                  ELSE lower(R.USERNAME)
+                                                  END
           ]]>
         </SQL>
     </View>
